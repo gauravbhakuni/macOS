@@ -19,4 +19,16 @@ export const useUIStore = create((set) => ({
   },
   bgModalOpen: false,
   setBgModalOpen: (isOpen) => set({ bgModalOpen: isOpen }),
+  openApps: [], // ["finder", "safari"]
+  openApp: (app) =>
+    set((state) => {
+      if (!state.openApps.includes(app)) {
+        return { openApps: [...state.openApps, app] };
+      }
+      return state;
+    }),
+  closeApp: (app) =>
+    set((state) => ({
+      openApps: state.openApps.filter((a) => a !== app),
+    })),
 }));

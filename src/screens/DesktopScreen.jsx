@@ -11,17 +11,42 @@ import {
 } from "react-icons/gr";
 
 import BackgroundModal from "../components/BackgroundModal";
+import SettingsApp from "../components/SettingsApp";
+import ComingSoon from "../components/ComingSoon";
 
 export default function DesktopScreen() {
   const setScreen = useUIStore((state) => state.setScreen);
-  const { bgModalOpen } = useUIStore()
-  const { setBgModalOpen } = useUIStore()
+  const { bgModalOpen } = useUIStore();
+  const { setBgModalOpen } = useUIStore();
   const { desktopBackground } = useUIStore();
+  const { openApps } = useUIStore();
+  const { openApp } = useUIStore();
   const [contextMenu, setContextMenu] = useState({
     visible: false,
     x: 0,
     y: 0,
   });
+
+  const appScreenMap = {
+    "System Settings": <SettingsApp />,
+    LaunchPad: <ComingSoon appName="LaunchPad" />,
+    Finder: <ComingSoon appName="Finder" />,
+    Safari: <ComingSoon appName="Safari" />,
+    Spotify: <ComingSoon appName="Spotify" />,
+    Messages: <ComingSoon appName="Messages" />,
+    Mail: <ComingSoon appName="Mail" />,
+    Maps: <ComingSoon appName="Maps" />,
+    Notes: <ComingSoon appName="Notes" />,
+    Photos: <ComingSoon appName="Photos" />,
+    FaceTime: <ComingSoon appName="FaceTime" />,
+    Calendar: <ComingSoon appName="Calendar" />,
+    Terminal: <ComingSoon appName="Terminal" />,
+    "VS Code": <ComingSoon appName="VS Code" />,
+    Preview: <ComingSoon appName="Preview" />,
+    Trash: <ComingSoon appName="Trash" />,
+    Github: <ComingSoon appName="Github" />,
+    Linkedin: <ComingSoon appName="Linkedin" />,
+  };
 
   const handleShutdown = () => {
     // Step 1: Go to loading
@@ -244,9 +269,16 @@ export default function DesktopScreen() {
         )}
       </div>
 
+      {/* Render App Screen if any app is open */}
+      {openApps.map((app) => (
+        <div key={app} className="absolute inset-0 z-20">
+          {appScreenMap[app]}
+        </div>
+      ))}
+
       {/* Dock */}
       <motion.div
-        className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-10 overflow-visible"
+        className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-30 overflow-visible"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -275,6 +307,9 @@ export default function DesktopScreen() {
                   scale: 1.2,
                   y: -20,
                   transition: { type: "spring", damping: 10, mass: 0.5 },
+                }}
+                onClick={() => {
+                  openApp(app.name);
                 }}
               >
                 {/* Tooltip */}
