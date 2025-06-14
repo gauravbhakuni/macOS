@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
-// import { useUIStore } from "../store/uiStore";
+import { useUIStore } from "../store/uiStore";
+import {
+  GrPowerShutdown,
+  GrSettingsOption,
+  GrMonitor,
+  GrLock,
+  GrRefresh,
+  GrMoon,
+} from "react-icons/gr";
 
 export default function DesktopScreen() {
-  // const setScreen = useUIStore((state) => state.setScreen);
+  const setScreen = useUIStore((state) => state.setScreen);
   const [contextMenu, setContextMenu] = useState({
     visible: false,
     x: 0,
     y: 0,
   });
 
-  // const handleShutdown = () => {
-  //   localStorage.removeItem("macos-screen");
-  //   setScreen("start");
-  // };
+  const handleShutdown = () => {
+    localStorage.removeItem("macos-screen");
+    setScreen("start");
+  };
 
   // Prevent default right-click and show custom menu
   const handleContextMenu = (e) => {
@@ -64,7 +72,7 @@ export default function DesktopScreen() {
       className="h-screen bg-[url('/bg/2.jpg')] bg-cover bg-center flex flex-col select-none"
     >
       {/* Menu Bar */}
-      <div className="bg-black/50 backdrop-blur-md text-white flex justify-between items-center px-4 py-1 text-sm">
+      <div className="bg-black/50 backdrop-blur-md text-white flex justify-between items-center px-4 text-sm">
         <div className="flex">
           <div className="relative">
             <div
@@ -87,53 +95,88 @@ export default function DesktopScreen() {
 
             {/* Apple Menu Dropdown */}
             {appleMenuOpen && (
-              <div className="absolute left-0 top-7 z-50 bg-gray-800/95 text-gray-300 rounded-md shadow-xl text-sm w-56 backdrop-blur-xl py-1 border border-gray-600">
-                <div className="hover:bg-blue-600 hover:text-white px-4 py-2 cursor-pointer transition-colors">
-                  About This Mac
-                </div>
-                <div className="hover:bg-blue-600 hover:text-white px-4 py-2 cursor-pointer transition-colors">
-                  System Settings...
-                </div>
+              <div className="absolute left-0 top-7 bg-gray-800/95 text-gray-300 rounded-md shadow-xl text-sm w-56 py-1 border z-50 border-gray-600">
+                <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors">
+                  <GrMonitor className="text-lg" />
+                  <span>About This Mac</span>
+                </button>
+
+                <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors">
+                  <GrSettingsOption className="text-lg" />
+                  <span>System Settings</span>
+                </button>
+
                 <div className="border-t border-gray-600 my-1" />
-                <div className="hover:bg-blue-600 hover:text-white px-4 py-2 cursor-pointer transition-colors">
-                  Sleep
-                </div>
-                <div className="hover:bg-blue-600 hover:text-white px-4 py-2 cursor-pointer transition-colors">
-                  Lock Screen
-                </div>
+
+                <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors">
+                  <GrMoon className="text-lg" />
+                  <span>Sleep</span>
+                </button>
+
+                <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors">
+                  <GrLock className="text-lg" />
+                  <span>Lock Screen</span>
+                </button>
+
                 <div className="border-t border-gray-600 my-1" />
-                <div className="hover:bg-blue-600 hover:text-white px-4 py-2 cursor-pointer transition-colors">
-                  Restart...
-                </div>
-                <div className="hover:bg-blue-600 hover:text-white px-4 py-2 cursor-pointer transition-colors">
-                  Shut Down...
-                </div>
+
+                <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors">
+                  <GrRefresh className="text-lg" />
+                  <span>Restart</span>
+                </button>
+
+                <button
+                  onClick={handleShutdown}
+                  className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors"
+                >
+                  <GrPowerShutdown className="text-lg" />
+                  <span>Shut Down</span>
+                </button>
               </div>
             )}
           </div>
 
-          <span className="px-2 font-bold">Finder</span>
-          <span className="px-2 hover:bg-white/40 hover:text-black">File</span>
-          <span className="px-2 hover:bg-white/40 hover:text-black">Edit</span>
-          <span className="px-2 hover:bg-white/40 hover:text-black">View</span>
-          <span className="px-2 hover:bg-white/40 hover:text-black">Go</span>
-          <span className="px-2 hover:bg-white/40 hover:text-black">Window</span>
-          <span className="px-2 hover:bg-white/40 hover:text-black">Help</span>
+          <span className="px-2 py-1 hover:bg-white/40 hover:text-black font-bold">
+            Finder
+          </span>
+          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
+            File
+          </span>
+          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
+            Edit
+          </span>
+          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
+            View
+          </span>
+          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
+            Go
+          </span>
+          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
+            Window
+          </span>
+          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
+            Help
+          </span>
         </div>
         <div className="flex">
-          <span className="px-2 hover:bg-white/40 hover:text-black">Wi-Fi</span>
-          <span className="px-2 hover:bg-white/40 hover:text-black">Battery</span>
-          <span className="px-2 hover:bg-white/40 hover:text-black">{formattedTime}</span>
+          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
+            Wi-Fi
+          </span>
+          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
+            Battery
+          </span>
+          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
+            {formattedTime}
+          </span>
         </div>
       </div>
 
       {/* Desktop Icons */}
-      <div className="flex-grow relative">
-
+      <div className="flex-grow relative pointer-events-none">
         {/* Custom Right Click Menu */}
         {contextMenu.visible && (
           <ul
-            className="absolute bg-gray-600 text-white rounded-md shadow-md text-sm py-1 z-50 backdrop-blur-sm"
+            className="absolute bg-gray-600 text-white rounded-md shadow-md text-sm py-1 z-10 backdrop-blur-sm"
             style={{ top: contextMenu.y, left: contextMenu.x }}
           >
             <li className="px-4 py-2 hover:bg-blue-500 cursor-pointer">
