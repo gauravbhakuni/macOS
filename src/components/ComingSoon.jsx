@@ -5,12 +5,12 @@ export default function ComingSoon({ appName = "This app" }) {
   const [isMaximized, setIsMaximized] = useState(false);
   const { closeApp } = useUIStore();
   return (
-    <div className="fixed inset-0 z-30 flex items-center justify-center">
+    <div className="flex items-center justify-center">
       <div className={`${
           isMaximized ? "w-[100vw] h-[100vh]" : "w-[60vw] h-[70vh]"
         }  bg-[#101012] text-white rounded-xl flex flex-col overflow-hidden shadow-2xl border border-white/10`}>
         {/* Top Bar with macOS-style buttons */}
-        <div className="h-10 bg-[#1a1a1c] flex items-center px-4 space-x-2">
+        <div className="app-header h-10 bg-[#1a1a1c] flex items-center px-4 space-x-2">
           <button
             onClick={() => closeApp(appName)}
             className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition-colors"
