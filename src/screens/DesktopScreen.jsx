@@ -10,8 +10,13 @@ import {
   GrMoon,
 } from "react-icons/gr";
 
+import BackgroundModal from "../components/BackgroundModal";
+
 export default function DesktopScreen() {
   const setScreen = useUIStore((state) => state.setScreen);
+  const { bgModalOpen } = useUIStore()
+  const { setBgModalOpen } = useUIStore()
+  const { desktopBackground } = useUIStore();
   const [contextMenu, setContextMenu] = useState({
     visible: false,
     x: 0,
@@ -101,7 +106,8 @@ export default function DesktopScreen() {
   return (
     <div
       onContextMenu={handleContextMenu}
-      className="h-screen bg-[url('/bg/2.jpg')] bg-cover bg-center flex flex-col select-none"
+      className="h-screen bg-cover bg-center flex flex-col select-none"
+      style={{ backgroundImage: `url(${desktopBackground})` }}
     >
       {/* Menu Bar */}
       <div className="bg-black/50 backdrop-blur-md text-white flex justify-between items-center px-4 text-sm">
@@ -204,7 +210,11 @@ export default function DesktopScreen() {
       </div>
 
       {/* Desktop Icons */}
-      <div className={`flex-grow relative ${appleMenuOpen ? "pointer-events-none" : ""}`}>
+      <div
+        className={`flex-grow relative ${
+          appleMenuOpen ? "pointer-events-none" : ""
+        }`}
+      >
         {/* Custom Right Click Menu */}
         {contextMenu.visible && (
           <ul
@@ -217,9 +227,16 @@ export default function DesktopScreen() {
             <li className="px-4 py-2 hover:bg-blue-500 cursor-pointer">
               Get Info
             </li>
-            <li className="px-4 py-2 hover:bg-blue-500 cursor-pointer">
+            <li
+              className="px-4 py-2 hover:bg-blue-500 cursor-pointer"
+              onClick={() => {
+                setContextMenu({ visible: false, x: 0, y: 0 });
+                setBgModalOpen(true);
+              }}
+            >
               Change Background
             </li>
+
             <li className="px-4 py-2 hover:bg-blue-500 cursor-pointer">
               Refresh
             </li>
@@ -293,6 +310,8 @@ export default function DesktopScreen() {
           </motion.div>
         </div>
       </motion.div>
+
+      {bgModalOpen && <BackgroundModal />}
     </div>
   );
 }
