@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUIStore } from "../store/uiStore";
+import { motion } from "framer-motion";
 import {
   GrPowerShutdown,
   GrSettingsOption,
@@ -18,8 +19,15 @@ export default function DesktopScreen() {
   });
 
   const handleShutdown = () => {
-    localStorage.removeItem("macos-screen");
-    setScreen("start");
+    // Step 1: Go to loading
+    setScreen("loading");
+    localStorage.setItem("macos-screen", "loading");
+
+    // Step 2: After 2s (loading), go back to start screen
+    setTimeout(() => {
+      setScreen("start");
+      localStorage.setItem("macos-screen", "start");
+    }, 2000);
   };
 
   // Prevent default right-click and show custom menu
@@ -45,14 +53,38 @@ export default function DesktopScreen() {
 
   // Sample apps for the dock
   const dockApps = [
-    { name: "Finder", icon: "🔍" },
-    { name: "Safari", icon: "🌐" },
-    { name: "Mail", icon: "✉️" },
-    { name: "Photos", icon: "📷" },
-    { name: "Music", icon: "🎵" },
-    { name: "App Store", icon: "🛒" },
-    { name: "System Settings", icon: "⚙️" },
-    { name: "Trash", icon: "🗑️" },
+    { name: "LaunchPad", icon: "/icons/apps/launchpad.png", padding: false },
+    { name: "Finder", icon: "/icons/apps/Finder.png", padding: false },
+    { name: "Safari", icon: "/icons/apps/safari.png", padding: false },
+    { name: "Spotify", icon: "/icons/apps/spotify.png", padding: true },
+    { name: "Messages", icon: "/icons/apps/imessage.png", padding: false },
+    { name: "Mail", icon: "/icons/apps/mail.png", padding: false },
+    { name: "Maps", icon: "/icons/apps/maps.png", padding: false },
+    { name: "Notes", icon: "/icons/apps/notes.png", padding: false },
+    { name: "Photos", icon: "/icons/apps/photos.png", padding: false },
+    { name: "FaceTime", icon: "/icons/apps/facecam.png", padding: false },
+    { name: "Calendar", icon: "/icons/apps/calender.png", padding: false },
+    {
+      name: "System Settings",
+      icon: "/icons/apps/settings.png",
+      padding: false,
+    },
+    { name: "Terminal", icon: "/icons/apps/terminal.png", padding: false },
+    { name: "VS Code", icon: "/icons/apps/vscode.png", padding: false },
+    { name: "Preview", icon: "/icons/apps/figma.png", padding: false },
+    { name: "Trash", icon: "/icons/apps/trash.png", padding: false },
+    {
+      name: "Github",
+      icon: "/icons/apps/github.png",
+      padding: true,
+      rounded: true,
+    },
+    {
+      name: "Linkedin",
+      icon: "/icons/apps/linkedin.png",
+      padding: true,
+      rounded: true,
+    },
   ];
 
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -172,11 +204,11 @@ export default function DesktopScreen() {
       </div>
 
       {/* Desktop Icons */}
-      <div className="flex-grow relative pointer-events-none">
+      <div className={`flex-grow relative ${appleMenuOpen ? "pointer-events-none" : ""}`}>
         {/* Custom Right Click Menu */}
         {contextMenu.visible && (
           <ul
-            className="absolute bg-gray-600 text-white rounded-md shadow-md text-sm py-1 z-10 backdrop-blur-sm"
+            className="absolute bg-gray-600 text-white rounded-md shadow-md text-sm py-1 z-50 backdrop-blur-sm"
             style={{ top: contextMenu.y, left: contextMenu.x }}
           >
             <li className="px-4 py-2 hover:bg-blue-500 cursor-pointer">
@@ -196,18 +228,71 @@ export default function DesktopScreen() {
       </div>
 
       {/* Dock */}
-      <div className="flex justify-center pb-2">
-        <div className="bg-gray-800/70 backdrop-blur-md rounded-2xl px-3 py-2 flex space-x-4 items-end">
-          {dockApps.map((app, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <div className="bg-white/10 rounded-lg p-3 text-xl hover:scale-110 transition-transform cursor-pointer">
-                {app.icon}
-              </div>
-              <span className="text-white text-xs mt-1">{app.name}</span>
-            </div>
-          ))}
+      <motion.div
+        className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-10 overflow-visible"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div
+          className="overflow-visible"
+          style={{ height: "116.5px", display: "flex", alignItems: "flex-end" }}
+        >
+          <motion.div
+            className="flex items-center space-x-2 p-2 rounded-2xl shadow-lg mx-auto"
+            style={{
+              background: "rgba(28, 28, 30, 0.65)",
+              backdropFilter: "blur(30px) saturate(180%)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              minHeight: "60px",
+              alignSelf: "flex-end",
+            }}
+            whileHover={{ height: "80px" }}
+            transition={{ type: "spring", damping: 10 }}
+          >
+            {dockApps.map((app, index) => (
+              <motion.div
+                key={index}
+                className="relative flex flex-col items-center justify-end"
+                whileHover={{
+                  scale: 1.2,
+                  y: -20,
+                  transition: { type: "spring", damping: 10, mass: 0.5 },
+                }}
+              >
+                {/* Tooltip */}
+                <motion.div
+                  className="absolute -top-8 bg-white/90 text-black text-xs px-2 py-1 rounded whitespace-nowrap shadow-md pointer-events-none"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileHover={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {app.name}
+                  <div className="absolute bottom-[-4px] left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white/90 rotate-45"></div>
+                </motion.div>
+
+                {/* Dock Icon */}
+                <motion.div
+                  className={`flex items-center justify-center rounded-xl bg-white/20 backdrop-blur-xl border border-white/30 cursor-pointer shadow-lg p-0 mb-1 ${
+                    app.padding ? "p-[6px]" : ""
+                  }`}
+                  style={{ width: "48px", height: "48px" }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <motion.img
+                    alt={app.name}
+                    className={`object-contain ${
+                      app.rounded ? "rounded-md" : ""
+                    }`}
+                    src={app.icon}
+                    whileHover={{ scale: 1.1 }}
+                  />
+                </motion.div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
