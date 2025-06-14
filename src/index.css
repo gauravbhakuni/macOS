@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+/* 1. Use CSS-first theme variables */
+@theme {
+  --color-page-bg: #000;
+  --color-text-primary: #fff;
+  --color-selection-bg: #fff;
+  --color-selection-text: #000;
+}
+
+/* 2. Customize dark variant to always apply via .dark class */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 3. Base resets and global styles */
+@layer base {
+  html, body, #root {
+    height: 100%;
+    width: 100%;
+  }
+
+  body {
+    background-color: var(--color-page-bg);
+    color: var(--color-text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-selection-bg);
+    color: var(--color-selection-text);
+  }
+}
+
+/* 4. Utility enhancements */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .mac-font {
+    font-family: inherit;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 2s ease-in-out forwards;
+  animation-delay: 2s;
+}
