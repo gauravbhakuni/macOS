@@ -20,15 +20,22 @@ export const useUIStore = create((set) => ({
   bgModalOpen: false,
   setBgModalOpen: (isOpen) => set({ bgModalOpen: isOpen }),
   openApps: [], // ["finder", "safari"]
-  openApp: (app) =>
+  openApp: (app, menu) =>
     set((state) => {
-      if (!state.openApps.includes(app)) {
-        return { openApps: [...state.openApps, app] };
+      let updates = {};
+      if (app === "System Settings" && menu) {
+        updates.settingsDefaultMenu = menu;
       }
-      return state;
+      if (!state.openApps.includes(app)) {
+        updates.openApps = [...state.openApps, app];
+        return updates;
+      }
+      return updates;
     }),
   closeApp: (app) =>
     set((state) => ({
       openApps: state.openApps.filter((a) => a !== app),
     })),
+  settingsDefaultMenu: "General",
+  setSettingsDefaultMenu: (menu) => set({ settingsDefaultMenu: menu }),
 }));

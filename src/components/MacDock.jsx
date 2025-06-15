@@ -10,9 +10,10 @@ const MacDock = () => {
   const openApps = useUIStore((state) => state.openApps);
   const openApp = useUIStore((state) => state.openApp);
   const closeApp = useUIStore((state) => state.closeApp);
+  const settingsDefaultMenu = useUIStore((state) => state.settingsDefaultMenu);
 
   const appScreenMap = {
-    "System Settings": <SettingsApp />,
+    "System Settings": <SettingsApp defaultMenu={settingsDefaultMenu} />,
     LaunchPad: <ComingSoon appName="LaunchPad" />,
     Finder: <ComingSoon appName="Finder" />,
     Safari: <ComingSoon appName="Safari" />,
@@ -101,49 +102,60 @@ const MacDock = () => {
             whileHover={{ height: "80px" }}
             transition={{ type: "spring", damping: 10 }}
           >
-            {dockApps.map((app, index) => (
-              <motion.div
-                key={index}
-                className="relative flex flex-col items-center justify-end"
-                whileHover={{
-                  scale: 1.2,
-                  y: -20,
-                  transition: { type: "spring", damping: 10, mass: 0.5 },
-                }}
-                onClick={() => {
-                  openApp(app.name);
-                }}
-              >
-                {/* Tooltip */}
+            {dockApps.map((app, index) => {
+              const isOpen = openApps.includes(app.name);
+              return (
                 <motion.div
-                  className="absolute -top-8 bg-white/90 text-black text-xs px-2 py-1 rounded whitespace-nowrap shadow-md pointer-events-none"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileHover={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2 }}
+                  key={index}
+                  className="relative flex flex-col items-center justify-end"
+                  whileHover={{
+                    scale: 1.2,
+                    y: -20,
+                    transition: { type: "spring", damping: 10, mass: 0.5 },
+                  }}
+                  onClick={() => {
+                    if (app.name === "System Settings") {
+                      openApp("System Settings", "General");
+                    } else {
+                      openApp(app.name);
+                    }
+                  }}
                 >
-                  {app.name}
-                  <div className="absolute bottom-[-4px] left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white/90 rotate-45"></div>
-                </motion.div>
+                  {/* Tooltip */}
+                  <motion.div
+                    className="absolute -top-8 bg-white/90 text-black text-xs px-2 py-1 rounded whitespace-nowrap shadow-md pointer-events-none"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileHover={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {app.name}
+                    <div className="absolute bottom-[-4px] left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white/90 rotate-45"></div>
+                  </motion.div>
 
-                {/* Dock Icon */}
-                <motion.div
-                  className={`flex items-center justify-center rounded-xl bg-white/20 backdrop-blur-xl border border-white/30 cursor-pointer shadow-lg p-0 mb-1 ${
-                    app.padding ? "p-[6px]" : ""
-                  }`}
-                  style={{ width: "48px", height: "48px" }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <motion.img
-                    alt={app.name}
-                    className={`object-contain ${
-                      app.rounded ? "rounded-md" : ""
+                  {/* Dock Icon */}
+                  <motion.div
+                    className={`flex items-center justify-center rounded-xl bg-white/20 backdrop-blur-xl border border-white/30 cursor-pointer shadow-lg p-0 mb-1 ${
+                      app.padding ? "p-[6px]" : ""
                     }`}
-                    src={app.icon}
-                    whileHover={{ scale: 1.1 }}
-                  />
+                    style={{ width: "48px", height: "48px" }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <motion.img
+                      alt={app.name}
+                      className={`object-contain ${
+                        app.rounded ? "rounded-md" : ""
+                      }`}
+                      src={app.icon}
+                      whileHover={{ scale: 1.1 }}
+                    />
+                  </motion.div>
+                  {/* Open app indicator */}
+                  {isOpen && (
+                    <div className="w-2 h-2 rounded-full bg-blue-400 mt-1 shadow-md" style={{ boxShadow: '0 0 6px #60a5fa' }} />
+                  )}
                 </motion.div>
-              </motion.div>
-            ))}
+              );
+            })}
           </motion.div>
         </div>
       </motion.div>

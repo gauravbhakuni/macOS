@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUIStore } from "../store/uiStore";
 
 const wallpapers = [
@@ -22,22 +22,15 @@ const menuItems = [
   "Users & Groups",
 ];
 
-export default function SettingsApp() {
-  const [activeMenu, setActiveMenu] = useState("Desktop & Wallpaper");
-  const { closeApp } = useUIStore();
+export default function SettingsApp({ defaultMenu = "General" }) {
+  const [activeMenu, setActiveMenu] = useState(defaultMenu);
+  useEffect(() => {
+    setActiveMenu(defaultMenu);
+  }, [defaultMenu]);
   const { desktopBackground, setDesktopBackground } = useUIStore();
 
   return (
     <div className="flex flex-col w-full h-full">
-      {/* Top bar (Window controls) */}
-      <div className="h-10 bg-[#1a1a1c] flex items-center px-4 space-x-2 app-header">
-        <button
-          onClick={() => closeApp("System Settings")}
-          className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition-colors"
-        />
-        <span className="ml-4 text-sm font-medium">System Settings</span>
-      </div>
-
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}

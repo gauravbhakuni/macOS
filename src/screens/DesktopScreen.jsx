@@ -12,12 +12,13 @@ import {
 
 import BackgroundModal from "../components/BackgroundModal";
 import MacDock from "../components/MacDock";
+import { CiWifiOn } from "react-icons/ci";
 
 export default function DesktopScreen() {
   const setScreen = useUIStore((state) => state.setScreen);
   const { bgModalOpen } = useUIStore();
-  const { setBgModalOpen } = useUIStore();
   const { desktopBackground } = useUIStore();
+  const openApp = useUIStore((state) => state.openApp);
   const [contextMenu, setContextMenu] = useState({
     visible: false,
     x: 0,
@@ -57,17 +58,22 @@ export default function DesktopScreen() {
     return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
-
   const [currentTime, setCurrentTime] = useState(new Date());
+
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
-  const formattedTime = currentTime.toLocaleTimeString("en-US", {
+
+  const formattedTime = `${currentTime.toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+  })} ${currentTime.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
-    hour12: true,
-  });
+    hour12: false,
+  })}`;
 
   return (
     <div
@@ -80,7 +86,7 @@ export default function DesktopScreen() {
         <div className="flex">
           <div className="relative">
             <div
-              className="font-semibold cursor-pointer hover:bg-white/20 rounded px-1 py-0.5"
+              className="font-semibold cursor-pointer hover:bg-white/20 rounded px-1 py-[6px]"
               onClick={(e) => {
                 e.stopPropagation();
                 setAppleMenuOpen(!appleMenuOpen);
@@ -105,7 +111,10 @@ export default function DesktopScreen() {
                   <span>About This Mac</span>
                 </button>
 
-                <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors">
+                <button
+                  className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors"
+                  onClick={() => openApp("System Settings", "General")}
+                >
                   <GrSettingsOption className="text-lg" />
                   <span>System Settings</span>
                 </button>
@@ -140,36 +149,19 @@ export default function DesktopScreen() {
             )}
           </div>
 
-          <span className="px-2 py-1 hover:bg-white/40 hover:text-black font-bold">
-            Finder
-          </span>
-          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
-            File
-          </span>
-          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
-            Edit
-          </span>
-          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
-            View
-          </span>
-          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
-            Go
-          </span>
-          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
-            Window
-          </span>
-          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
-            Help
-          </span>
+          <span className="px-2 py-1 hover:bg-white/20 font-bold">Finder</span>
+          <span className="px-2 py-1 hover:bg-white/20">File</span>
+          <span className="px-2 py-1 hover:bg-white/20">Edit</span>
+          <span className="px-2 py-1 hover:bg-white/20">View</span>
+          <span className="px-2 py-1 hover:bg-white/20">Go</span>
+          <span className="px-2 py-1 hover:bg-white/20">Window</span>
+          <span className="px-2 py-1 hover:bg-white/20">Help</span>
         </div>
         <div className="flex">
-          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
-            Wi-Fi
+          <span className="px-2 py-1 hover:bg-white/20">
+            <CiWifiOn className="w-5 h-5" />
           </span>
-          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
-            Battery
-          </span>
-          <span className="px-2 py-1 hover:bg-white/40 hover:text-black">
+          <span className="px-2 py-1 text-[0.9rem] hover:bg-white/20">
             {formattedTime}
           </span>
         </div>
@@ -196,8 +188,7 @@ export default function DesktopScreen() {
             <li
               className="px-4 py-2 hover:bg-blue-500 cursor-pointer"
               onClick={() => {
-                setContextMenu({ visible: false, x: 0, y: 0 });
-                setBgModalOpen(true);
+                openApp("System Settings", "Desktop & Wallpaper");
               }}
             >
               Change Background
