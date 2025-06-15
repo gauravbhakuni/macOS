@@ -5,6 +5,7 @@ import { useUIStore } from "../store/uiStore";
 import SettingsApp from "./SettingsApp";
 import ComingSoon from "./ComingSoon";
 import AppWindow from "./AppWindow";
+import Spotify from "./Spotify";
 
 const MacDock = () => {
   const openApps = useUIStore((state) => state.openApps);
@@ -17,7 +18,7 @@ const MacDock = () => {
     LaunchPad: <ComingSoon appName="LaunchPad" />,
     Finder: <ComingSoon appName="Finder" />,
     Safari: <ComingSoon appName="Safari" />,
-    Spotify: <ComingSoon appName="Spotify" />,
+    Spotify: <Spotify />,
     Messages: <ComingSoon appName="Messages" />,
     Mail: <ComingSoon appName="Mail" />,
     Maps: <ComingSoon appName="Maps" />,
