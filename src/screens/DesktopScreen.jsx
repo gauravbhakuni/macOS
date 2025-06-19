@@ -37,6 +37,18 @@ export default function DesktopScreen() {
     }, 2000);
   };
 
+  const handleSleep = () => {
+    // Step 1: Go to loading
+    setScreen("loading");
+    localStorage.setItem("macos-screen", "loading");
+
+    // Step 2: After 2s (loading), go back to start screen
+    setTimeout(() => {
+      setScreen("login");
+      localStorage.setItem("macos-screen", "login");
+    }, 2000);
+  };
+
   // Prevent default right-click and show custom menu
   const handleContextMenu = (e) => {
     e.preventDefault();
@@ -106,7 +118,10 @@ export default function DesktopScreen() {
             {/* Apple Menu Dropdown */}
             {appleMenuOpen && (
               <div className="absolute left-0 top-7 bg-gray-800/95 text-gray-300 rounded-md shadow-xl text-sm w-56 py-1 border z-50 border-gray-600">
-                <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors">
+                <button
+                  className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors"
+                  onClick={() => openApp("System Settings", "General")}
+                >
                   <GrMonitor className="text-lg" />
                   <span>About This Mac</span>
                 </button>
@@ -121,12 +136,18 @@ export default function DesktopScreen() {
 
                 <div className="border-t border-gray-600 my-1" />
 
-                <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors">
+                <button
+                  onClick={handleSleep}
+                  className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors"
+                >
                   <GrMoon className="text-lg" />
                   <span>Sleep</span>
                 </button>
 
-                <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors">
+                <button
+                  onClick={handleSleep}
+                  className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors"
+                >
                   <GrLock className="text-lg" />
                   <span>Lock Screen</span>
                 </button>

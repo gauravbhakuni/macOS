@@ -91,9 +91,98 @@ export default function SettingsApp({ defaultMenu = "General" }) {
               </div>
             </>
           )}
+
+          {activeMenu === "General" && (
+            <div className="space-y-6 text-sm text-white/80">
+              <div>
+                <h3 className="text-base font-medium text-white mb-1">About</h3>
+                <p>
+                  macOS Portfolio v1.0 — A tribute to Apple’s sleek UI, built
+                  using React, Tailwind, and Framer Motion.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-medium text-white mb-1">
+                  Software Update
+                </h3>
+                <p>Your system is up to date.</p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-medium text-white mb-1">
+                  Startup Disk
+                </h3>
+                <p>Macintosh HD</p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-medium text-white mb-1">
+                  System Report
+                </h3>
+                <p>React: 18+, TailwindCSS: 3+, Framework: Vite</p>
+              </div>
+            </div>
+          )}
+
+          {activeMenu === "Appearance" && (
+            <div className="space-y-6 text-sm text-white/80">
+              <div>
+                <h3 className="text-base font-semibold text-white mb-3">
+                  Appearance Mode
+                </h3>
+                <div className="grid grid-cols-3 gap-4">
+                  {[
+                    { mode: "Light", img: "/appearance/light.jpg" },
+                    { mode: "Dark", img: "/appearance/dark.jpg" },
+                    { mode: "Auto", img: "/appearance/auto.jpg" },
+                  ].map((theme) => (
+                    <div
+                      key={theme.mode}
+                      onClick={() =>
+                        console.log(`Switched to ${theme.mode} mode`)
+                      } // replace with your theme logic
+                      className="cursor-pointer border border-white/10 hover:border-blue-500 rounded-lg overflow-hidden transition-all duration-200"
+                    >
+                      <img
+                        src={theme.img}
+                        alt={`${theme.mode} Mode`}
+                        className="w-full h-24 object-cover"
+                      />
+                      <div className="text-center py-2 bg-[#1f1f25] text-white text-sm font-medium">
+                        {theme.mode}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-base font-semibold text-white mb-3">
+                  Accent Color
+                </h3>
+                <div className="flex space-x-3">
+                  {[
+                    "bg-blue-500",
+                    "bg-red-500",
+                    "bg-green-500",
+                    "bg-yellow-400",
+                    "bg-pink-500",
+                    "bg-purple-500",
+                    "bg-cyan-400",
+                  ].map((color, i) => (
+                    <div
+                      key={i}
+                      className={`w-8 h-8 rounded-full border-2 border-white/20 hover:border-white cursor-pointer ${color}`}
+                      onClick={() => console.log(`Accent changed to ${color}`)} // hook into store or theme logic
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
-

@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useUIStore } from "../store/uiStore";
 
@@ -6,6 +6,8 @@ import SettingsApp from "./SettingsApp";
 import ComingSoon from "./ComingSoon";
 import AppWindow from "./AppWindow";
 import Spotify from "./Spotify";
+import Launchpad from "./Launchpad";
+import Safari from "./Safari";
 
 const MacDock = () => {
   const openApps = useUIStore((state) => state.openApps);
@@ -13,11 +15,13 @@ const MacDock = () => {
   const closeApp = useUIStore((state) => state.closeApp);
   const settingsDefaultMenu = useUIStore((state) => state.settingsDefaultMenu);
 
+  const [showLaunchpad, setShowLaunchpad] = useState(false);
+
   const appScreenMap = {
     "System Settings": <SettingsApp defaultMenu={settingsDefaultMenu} />,
     LaunchPad: <ComingSoon appName="LaunchPad" />,
     Finder: <ComingSoon appName="Finder" />,
-    Safari: <ComingSoon appName="Safari" />,
+    Safari: <Safari />,
     Spotify: <Spotify />,
     Messages: <ComingSoon appName="Messages" />,
     Mail: <ComingSoon appName="Mail" />,
@@ -115,7 +119,9 @@ const MacDock = () => {
                     transition: { type: "spring", damping: 10, mass: 0.5 },
                   }}
                   onClick={() => {
-                    if (app.name === "System Settings") {
+                    if (app.name === "LaunchPad") {
+                      setShowLaunchpad(true);
+                    } else if (app.name === "System Settings") {
                       openApp("System Settings", "General");
                     } else {
                       openApp(app.name);
@@ -152,7 +158,10 @@ const MacDock = () => {
                   </motion.div>
                   {/* Open app indicator */}
                   {isOpen && (
-                    <div className="w-2 h-2 rounded-full bg-blue-400 mt-1 shadow-md" style={{ boxShadow: '0 0 6px #60a5fa' }} />
+                    <div
+                      className="w-2 h-2 rounded-full bg-blue-400 mt-1 shadow-md"
+                      style={{ boxShadow: "0 0 6px #60a5fa" }}
+                    />
                   )}
                 </motion.div>
               );
@@ -160,6 +169,10 @@ const MacDock = () => {
           </motion.div>
         </div>
       </motion.div>
+
+      {showLaunchpad && (
+        <Launchpad apps={dockApps} onClose={() => setShowLaunchpad(false)} />
+      )}
     </div>
   );
 };
