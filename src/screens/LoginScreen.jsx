@@ -65,7 +65,8 @@ export default function LoginScreen({ onLoginSuccess }) {
               className="w-24 h-24 rounded-full border-2 border-white mb-4 hover:brightness-110 transition"
             />
             <h2 className="text-white text-xl font-semibold mb-1">User</h2>
-            <p className="text-white/80 text-sm mb-4">Click to unlock</p>
+            <p className="text-white/80 text-sm">Click to unlock</p>
+            <p className="text-white/80 text-sm mb-4">Password: <span className='text-amber-200'>admin</span></p>
           </div>
 
           {showPasswordField && (
