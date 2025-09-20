@@ -17,6 +17,7 @@ export default function LoginScreen({ onLoginSuccess }) {
   // 🔥 Preload desktop + dock assets silently in the background
   useEffect(() => {
     const preloadList = [
+      "/bg/1.jpg",
       "/bg/desktop.jpg", // your DesktopScreen background
       ...dockApps.map((app) => app.icon), // all dock icons
     ];

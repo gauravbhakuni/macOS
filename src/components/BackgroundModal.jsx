@@ -2,13 +2,7 @@ import { motion } from "framer-motion";
 import { useUIStore } from "../store/uiStore";
 import { useState, useEffect } from "react";
 
-const backgrounds = [
-  "/bg/1.jpg",
-  "/bg/2.jpg",
-  "/bg/11.jpg",
-  "/bg/16.jpg",
-  "/bg/69.jpg",
-];
+import { backgrounds } from "../data/background";
 
 export default function BackgroundModal() {
   const { desktopBackground, setDesktopBackground, setBgModalOpen } = useUIStore();

@@ -9,9 +9,12 @@ import {
   GrMoon,
 } from "react-icons/gr";
 
+import { backgrounds } from "../data/background";
+
 import BackgroundModal from "../components/BackgroundModal";
 import MacDock from "../components/MacDock";
 import { CiWifiOn } from "react-icons/ci";
+import { preloadImages } from "../utils/preloadImages";
 
 export default function DesktopScreen() {
   const setScreen = useUIStore((state) => state.setScreen);
@@ -74,6 +77,15 @@ export default function DesktopScreen() {
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    // Preload current background
+    const current = localStorage.getItem("macos-background") || "/bg/2.jpg";
+    preloadImages([current]);
+
+    // Preload all gallery backgrounds
+    preloadImages(backgrounds);
   }, []);
 
   const formattedTime = `${currentTime.toLocaleDateString("en-US", {
