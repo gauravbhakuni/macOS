@@ -9,6 +9,8 @@ import Spotify from "./Spotify";
 import Launchpad from "./Launchpad";
 import Safari from "./Safari";
 
+import { dockApps } from "../data/dockApps";
+
 const MacDock = () => {
   const openApps = useUIStore((state) => state.openApps);
   const openApp = useUIStore((state) => state.openApp);
@@ -37,41 +39,6 @@ const MacDock = () => {
     Github: <ComingSoon appName="Github" />,
     Linkedin: <ComingSoon appName="Linkedin" />,
   };
-
-  const dockApps = [
-    { name: "LaunchPad", icon: "/icons/apps/launchpad.png", padding: false },
-    { name: "Finder", icon: "/icons/apps/Finder.png", padding: false },
-    { name: "Safari", icon: "/icons/apps/safari.png", padding: false },
-    { name: "Spotify", icon: "/icons/apps/spotify.png", padding: true },
-    { name: "Messages", icon: "/icons/apps/imessage.png", padding: false },
-    { name: "Mail", icon: "/icons/apps/mail.png", padding: false },
-    { name: "Maps", icon: "/icons/apps/maps.png", padding: false },
-    { name: "Notes", icon: "/icons/apps/notes.png", padding: false },
-    { name: "Photos", icon: "/icons/apps/photos.png", padding: false },
-    { name: "FaceTime", icon: "/icons/apps/facecam.png", padding: false },
-    { name: "Calendar", icon: "/icons/apps/calender.png", padding: false },
-    {
-      name: "System Settings",
-      icon: "/icons/apps/settings.png",
-      padding: false,
-    },
-    { name: "Terminal", icon: "/icons/apps/terminal.png", padding: false },
-    { name: "VS Code", icon: "/icons/apps/vscode.png", padding: false },
-    { name: "Preview", icon: "/icons/apps/figma.png", padding: false },
-    { name: "Trash", icon: "/icons/apps/trash.png", padding: false },
-    {
-      name: "Github",
-      icon: "/icons/apps/github.png",
-      padding: true,
-      rounded: true,
-    },
-    {
-      name: "Linkedin",
-      icon: "/icons/apps/linkedin.png",
-      padding: true,
-      rounded: true,
-    },
-  ];
 
   return (
     <div>
