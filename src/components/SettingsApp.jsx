@@ -6,6 +6,8 @@ const wallpapers = [
   { id: 2, src: "/bg/2.jpg" },
   { id: 3, src: "/bg/11.jpg" },
   { id: 4, src: "/bg/16.jpg" },
+  { id: 5, src: "/bg/69.jpg" },
+  { id: 6, src: "/bg/20.webp" },
 ];
 
 const menuItems = [
