@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useUIStore } from "../store/uiStore";
-import { motion } from "framer-motion";
 import {
   GrPowerShutdown,
   GrSettingsOption,

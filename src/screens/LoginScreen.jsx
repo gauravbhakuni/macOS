@@ -1,46 +1,54 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
+import { preloadImages } from "../utils/preloadImages"; // we'll create this file
+import { dockApps } from "../data/dockApps";
 
 export default function LoginScreen({ onLoginSuccess }) {
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState(false)
-  const [currentTime, setCurrentTime] = useState(new Date())
-  const [showPasswordField, setShowPasswordField] = useState(false)
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [showPasswordField, setShowPasswordField] = useState(false);
 
-  // Update time every second
+  // update time every second
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // 🔥 Preload desktop + dock assets silently in the background
+  useEffect(() => {
+    const preloadList = [
+      "/bg/desktop.jpg", // your DesktopScreen background
+      ...dockApps.map((app) => app.icon), // all dock icons
+    ];
+    preloadImages(preloadList);
+  }, []);
 
   const handleLogin = (e) => {
-    e.preventDefault()
-    if (password === 'admin') {
-      onLoginSuccess()
+    e.preventDefault();
+    if (password === "admin") {
+      onLoginSuccess();
     } else {
-      setError(true)
+      setError(true);
     }
-  }
+  };
 
   const handleIconClick = () => {
-    setShowPasswordField(true)
-    // Focus the input field after a small delay to ensure it's visible
-    setTimeout(() => document.querySelector('input')?.focus(), 100)
-  }
+    setShowPasswordField(true);
+    setTimeout(() => document.querySelector("input")?.focus(), 100);
+  };
 
-  // Format date and time
-  const dayName = currentTime.toLocaleDateString('en-US', { weekday: 'long' })
-  const date = currentTime.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
-  })
-  const time = currentTime.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
-  })
+  // format time + date
+  const dayName = currentTime.toLocaleDateString("en-US", { weekday: "long" });
+  const date = currentTime.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+  const time = currentTime.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
 
   return (
     <div className="h-screen w-full flex flex-col items-center bg-[url('/bg/1.jpg')] bg-cover bg-center">
@@ -52,10 +60,10 @@ export default function LoginScreen({ onLoginSuccess }) {
         <h1 className="text-white text-6xl font-extrabold">{time}</h1>
       </div>
 
-      {/* Middle section with user and login */}
+      {/* Middle section */}
       <div className="flex-grow flex flex-col items-center">
         <div className="flex flex-col items-center">
-          <div 
+          <div
             onClick={handleIconClick}
             className="flex flex-col items-center cursor-pointer"
           >
@@ -66,23 +74,30 @@ export default function LoginScreen({ onLoginSuccess }) {
             />
             <h2 className="text-white text-xl font-semibold mb-1">User</h2>
             <p className="text-white/80 text-sm">Click to unlock</p>
-            <p className="text-white/80 text-sm mb-4">Password: <span className='text-amber-200'>admin</span></p>
+            <p className="text-white/80 text-sm mb-4">
+              Password: <span className="text-amber-200">admin</span>
+            </p>
           </div>
 
           {showPasswordField && (
-            <form onSubmit={handleLogin} className="w-full flex flex-col items-center animate-[fadeIn_0.3s_ease-out]">
+            <form
+              onSubmit={handleLogin}
+              className="w-full flex flex-col items-center animate-[fadeIn_0.3s_ease-out]"
+            >
               <input
                 type="password"
                 placeholder="Enter Password"
                 value={password}
                 onChange={(e) => {
-                  setPassword(e.target.value)
-                  setError(false)
+                  setPassword(e.target.value);
+                  setError(false);
                 }}
                 className="w-60 px-4 py-2 rounded bg-black/50 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-black text-center"
                 autoFocus
               />
-              {error && <p className="text-red-200 text-sm mt-2">Incorrect password</p>}
+              {error && (
+                <p className="text-red-200 text-sm mt-2">Incorrect password</p>
+              )}
 
               <button
                 type="submit"
@@ -95,5 +110,5 @@ export default function LoginScreen({ onLoginSuccess }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
