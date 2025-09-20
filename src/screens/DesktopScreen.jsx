@@ -165,7 +165,10 @@ export default function DesktopScreen() {
 
                 <div className="border-t border-gray-600 my-1" />
 
-                <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors">
+                <button
+                  onClick={handleSleep}
+                  className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-blue-600 hover:text-white text-left transition-colors"
+                >
                   <GrRefresh className="text-lg" />
                   <span>Restart</span>
                 </button>

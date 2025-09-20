@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useUIStore } from "../store/uiStore";
+import { preloadImages } from "../utils/preloadImages";
 
 const wallpapers = [
   { id: 1, src: "/bg/1.jpg" },
@@ -30,6 +31,14 @@ export default function SettingsApp({ defaultMenu = "General" }) {
     setActiveMenu(defaultMenu);
   }, [defaultMenu]);
   const { desktopBackground, setDesktopBackground } = useUIStore();
+
+  useEffect(() => {
+    // Preload current wallpaper for instant preview
+    preloadImages([desktopBackground]);
+
+    // Preload all wallpapers
+    preloadImages(wallpapers.map((wp) => wp.src));
+  }, [desktopBackground]);
 
   return (
     <div className="flex flex-col w-full h-full">
